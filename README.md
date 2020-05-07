@@ -22,3 +22,8 @@ When the padding for the decrypted CBC ciphertext is invalid it returns a _**HTT
 However if the padding is valid but the decrypted message is invalid it returns a _**HTTP 404 error(URL not found)**_.
 
 Using only this indormation the padding oracle is able to completely decrypt the ciphertext in at most <img src="https://render.githubusercontent.com/render/math?math=256 * |m|"> requests to the server
+The implementation used a few tricks to speedup the attack such as :
+
+- Use the multiprocessing library in python to speedup the attack by parallelising it across all cores of the CPU
+- Each block of the text is assigned to a different core
+- Instead of checking all ASCII characters in order it uses a frequency table to check in order of occurence 
