@@ -50,7 +50,7 @@ Given a large prime _p_ of size _500 bits_ , a generator g, h from the group  <i
 
 We need to find the exponent _x_. The brute force algorithm takes <img src="https://render.githubusercontent.com/render/math?math=O(exp(n))">
 Using a meet in the middle method by maintaining a hash table we can reduce this to <img src="https://render.githubusercontent.com/render/math?math=O(exp(\sqrt{n}))">
-_i.e_ by writing the exponent _x_ as   <img src="https://render.githubusercontent.com/render/math?math=x=Bx_{0}+x_{1}"> where <img src="http://www.sciweavers.org/tex2img.php?eq=B%3D2%5E%7B20%7D%0A%0Ah%2Fg%5E%7Bx_1%7D%20%3D%20%28g%5E%7BB%7D%29%5E%7Bx_0%7D%20&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="B=2^{20}h/g^{x_1} = (g^{B})^{x_0} " width="518" height="58" />
+_i.e_ by writing the exponent _x_ as   <img src="https://render.githubusercontent.com/render/math?math=x=Bx_{0}+x_{1}"> where <img src="http://www.sciweavers.org/tex2img.php?eq=B%3D2%5E%7B20%7D%0A%0Ah%2Fg%5E%7Bx_0%7D%20%3D%20%28g%5E%7BB%7D%29%5E%7Bx_1%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="B=2^{20}h/g^{x_0} = (g^{B})^{x_1}" width="518" height="58" />
 
 We hash values of the LHS and check the RHS for each value.
 After optimizations the attack completes in 1.5 seconds using gmpy2 library in python
