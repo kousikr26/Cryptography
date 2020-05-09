@@ -21,7 +21,7 @@ class EncryptAES(object):
         - Block size in bytes , default is 16 bytes(AES-128)
     """
     
-    def __init__(self,key,mode='cbc',block_size=16):
+    def __init__(self,key,mode='cbc',block_size=16,cores=cpu_count()):
         self.key=key
         self.mode=mode
         self.block_size=block_size
@@ -72,7 +72,7 @@ class EncryptAES(object):
                         for i in range(len(blocks))]
 
             #Parallelise Encryption
-            with Pool(len(blocks)+2) as p:  # uses all cores available in parallel
+            with Pool(8) as p:  # uses all cores available in parallel
                 out = p.map(xorEncrypt, key_all, xor_inps, blocks)
            
             cipher_text=iv+b''.join(out)
@@ -115,7 +115,7 @@ class EncryptAES(object):
             key_all=[self.key for i in range(len(cipher_blocks))]
             #xor_inps is the sequence iv, iv+1,iv+2... used in ctr mode
             xor_inps = [bytes.fromhex(str(hex(int(iv.hex(), self.block_size)+i))[2:]) for i in range(len(cipher_blocks))]
-            with Pool(len(cipher_blocks)+2) as p:  # uses all cores available in parallel
+            with Pool(8) as p:  # uses all cores available in parallel
                 out = p.map(xorEncrypt,key_all, xor_inps,cipher_blocks)
 
             message_text = (b''.join(out)).decode("utf-8")
@@ -127,7 +127,8 @@ class EncryptAES(object):
 
 
 if __name__=='__main__':
-    message = "aaaabcaaaaaaaaaaaaaaaaaabbjnkmlkmvlkmklefmklcmkldmkldsmklvmda1"
+    file=open("bible.txt","r")
+    message = file.read()
     cipher = "69dda8455c7dd4254bf353b773304eec0ec7702330098ce7f7520d1cbbb20fc388d1b0adb5054dbd7370849dbf0b88d393f252e764f1f5f7ad97ef79d59ce29f5f51eeca32eabedd9afa9329"
     cipher=bytes.fromhex(cipher)
     key = "36f18357be4dbd77f050515c73fcf9f2"
@@ -135,8 +136,13 @@ if __name__=='__main__':
 
     print("Using",cpu_count(),"cores")
     startTime=time.time()
-    aes=EncryptAES(key,mode='ctr')
-
+    aes=EncryptAES(key,mode='ctr',cores=1)
+    aes.decrypt(aes.encrypt(message))
+    print("Time taken non parallel ", time.time()-startTime,
+          " seconds", "Message length ", len(message))
     
-    print(aes.decrypt(aes.encrypt(message)))
-    print("Time taken ",time.time()-startTime," seconds")
+    startTime = time.time()
+    aes_parallel=EncryptAES(key, mode='ctr',cores=cpu_count())
+    aes.decrypt(aes.encrypt(message))
+   
+    print("Time taken parallel",time.time()-startTime," seconds", "Message length ",len(message))

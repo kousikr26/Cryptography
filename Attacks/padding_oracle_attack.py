@@ -1,7 +1,7 @@
 import urllib.request
 import sys
 from multiprocessing import Pool, cpu_count
-
+import time
 TARGET = 'http://crypto-class.appspot.com/po?er='
 BLOCK_SIZE = 16
 """ A parallelised implementation of the padding oracle attack on a dummy website"""
@@ -91,9 +91,11 @@ def attack(ciphertext):
 
 
 if __name__ == "__main__":
+    start=time.time()
     ciphertext = "f20bdba6ff29eed7b046d1df9fb7000058b1ffb4210a580f748b4ac714c001bd4a61044426fb515dad3f21f18aa577c0bdf302936266926ff37dbf7035d5eeb4"
     print('Avaliable Cores:', cpu_count())
     ciphertext=bytes.fromhex(ciphertext)
     attack(ciphertext)
+    print("Time taken :",time.time()-start)
     
     
