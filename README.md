@@ -70,3 +70,15 @@ We can find p,q in constant time
 We can find p,q in <img src="https://render.githubusercontent.com/render/math?math=|p-q|\leqslant 2^{20}"> iterations
 #### c) <img src="https://render.githubusercontent.com/render/math?math=|3p-2q|\leqslant N^{1/4}">
 We can find p,q in constant time
+
+### 5. Caesar Cipher
+A basic implementation of the caesar cipher for encryption
+
+### 6. Frequency attack
+A brute force frequency attack to show the weakness of caesar cipher.
+
+Compares the frequency of all possible decryption with the expected frequency of the english alphabet and chooses the one with minimum L1 distance.
+
+
+### 7. SDES implementation
+
